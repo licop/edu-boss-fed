@@ -1,3 +1,7 @@
+/**
+ * 为jsx组件模板补充类型声明
+ */
+
 import Vue, { VNode } from 'vue'
 
 declare global {
