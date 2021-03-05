@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <h1>拉钩教育</h1>
-    <p>{{ a }}</p>
     <!--- 跟路由出口 --->
     <router-view/>
   </div>
