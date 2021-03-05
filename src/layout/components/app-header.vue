@@ -60,7 +60,7 @@ export default Vue.extend({
         this.$router.push({
           name: 'login'
         })
-
+        
         this.$message({
           type: 'success',
           message: '退出成功!'
