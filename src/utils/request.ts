@@ -4,7 +4,6 @@ import store from '@/store'
 import router from '@/router'
 import qs from 'qs'
 
-
 const request = axios.create({
   // 配置选项
   // baseURL
@@ -18,7 +17,7 @@ function redirectLogin () {
     }
   })
 }
-// 重新获取token
+// 重新获取token，refresh_token只能使用一次
 function refreshToken () {
   return axios.create()({
     method: 'POST',
@@ -48,7 +47,6 @@ let isRfreshing = false // 控制刷新 token 的状态
 let requests: any[] = [] // 存储刷新 token 期间过来的 401 请求
 request.interceptors.response.use(function (response) {
   // 当状态码为2xx 都会进入这里
-  console.log('请求响应成功了 =》 ', response)
   return response
 }, async function (error) {
   // 超出状态码2xx开头的，进入这里
@@ -79,11 +77,12 @@ request.interceptors.response.use(function (response) {
           requests.forEach(cb => cb())
           // 重置 requests 数组
           requests = []
-          return request(error.config)
+          // 把本次失败的请求重新发出去
+          return request(error.config) // error.config 失败请求的错误信息
         }).catch(err => {
           store.commit('setUser', null)
           redirectLogin()
-          return Promise.reject(error)
+          return Promise.reject(err)
         }).finally(() => {
           isRfreshing = false // 重置刷新状态
         })

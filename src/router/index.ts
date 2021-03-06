@@ -27,35 +27,54 @@ const routes: Array<RouteConfig> = [
       {
         path: '/role',
         name: 'role',
+        meta: '角色管理',
         component: () => import(/* webpackChunkName: 'role' */ '@/views/role/index.vue')
       },
       {
         path: '/menu',
+        meta: '菜单管理',
         name: 'menu',
         component: () => import(/* webpackChunkName: 'menu' */ '@/views/menu/index.vue')
       },
       {
+        path: '/menu/create',
+        meta: '新建菜单',
+        name: 'menu-create',
+        component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/create.vue')
+      },
+      {
+        path: '/menu/:id/edit',
+        meta: '编辑菜单',
+        name: 'menu-edit',
+        component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/edit.vue')
+      },
+      {
         path: '/resource',
+        meta: '资源管理',
         name: 'resource',
         component: () => import(/* webpackChunkName: 'resource' */ '@/views/resource/index.vue')
       },
       {
         path: '/course',
+        meta: '课程管理',
         name: 'course',
         component: () => import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
       },
       {
         path: '/user',
+        meta: '用户管理',
         name: 'user',
         component: () => import(/* webpackChunkName: 'user' */ '@/views/user/index.vue')
       },
       {
         path: '/advert',
+        meta: '广告管理',
         name: 'advert',
         component: () => import(/* webpackChunkName: 'advert' */ '@/views/advert/index.vue')
       },
       {
         path: '/advert-space',
+        meta: '广告位管理',
         name: 'advert-space',
         component: () => import(/* webpackChunkName: 'advert-space' */ '@/views/advert-space/index.vue')
       }
