@@ -75,6 +75,26 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
       },
       {
+        path: '/course/create',
+        meta: '新增课程',
+        name: 'course-create',
+        component: () => import(/* webpackChunkName: 'course-create' */ '@/views/course/create.vue')
+      },
+      {
+        path: '/course/:courseId/edit',
+        meta: '编辑课程',
+        name: 'course-edit',
+        component: () => import(/* webpackChunkName: 'course-edit' */ '@/views/course/edit.vue'),
+        props: true
+      },
+      {
+        path: '/course/:courseId/section',
+        meta: '课程结构',
+        name: 'course-section',
+        component: () => import(/* webpackChunkName: 'course-section' */ '@/views/course/section.vue'),
+        props: true
+      },
+      {
         path: '/user',
         meta: '用户管理',
         name: 'user',

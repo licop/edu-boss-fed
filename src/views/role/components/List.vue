@@ -147,7 +147,7 @@ export default Vue.extend({
       this.roleId = role.id
       this.isEdit = true
     },
-
+    
     async handleDelete (role: any) {
       try {
         await this.$confirm(`确认删除角色：${role.name}？`, '删除提示')

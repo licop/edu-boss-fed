@@ -123,7 +123,7 @@ export default Vue.extend({
       isLoading: true // 加载状态
     }
   },
-  
+
   created () {
     this.loadResources()
     this.loadResourceCategories()
@@ -142,7 +142,7 @@ export default Vue.extend({
       this.totalCount = data.data.total
       this.isLoading = false // 关闭加载中状态
     },
-    
+
     onSubmit () {
       this.form.current = 1 // 筛选查询从第 1 页开始
       this.loadResources()
