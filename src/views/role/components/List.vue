@@ -33,18 +33,22 @@
         v-loading="loading"
       >
         <el-table-column
+          align='center'
           prop="id"
           label="编号"
         />
         <el-table-column
+          align='center'
           prop="name"
           label="角色名称"
         />
         <el-table-column
+          align='center'
           prop="description"
           label="描述"
         />
         <el-table-column
+          align='center'
           prop="createdTime"
           label="添加时间"
         />

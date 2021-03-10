@@ -2,33 +2,42 @@
     <div class="menu">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-button @click="$router.push({ name: 'menu-create' })">添加菜单</el-button>
+        <el-button size="small" @click="$router.push({ name: 'menu-create' })">添加菜单</el-button>
       </div>
       <el-table
         :data="menus"
-        style="width: 100%">
+        border
+        style="width: 100%"
+      >
         <el-table-column
           label="编号"
-          min-width="150"
+          width="150"
+          align='center'
           type="index">
         </el-table-column>
         <el-table-column
           prop="name"
+          align='center'
           label="菜单名称"
           min-width="150">
         </el-table-column>
         <el-table-column
-          prop="level"
+          align='center'
           label="菜单级数"
           min-width="150">
+          <template slot-scope="scope">
+            {{ scope.row.level }}
+          </template>
         </el-table-column>
         <el-table-column
           prop="icon"
+          align='center'
           label="前端图标"
           min-width="150">
         </el-table-column>
         <el-table-column
           prop="orderNum"
+          align='center'
           label="排序"
           min-width="150">
         </el-table-column>
@@ -53,6 +62,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { getAllMenus, deleteMenu } from '@/services/menu'
+const level = ['一级', '二级', '三级']
 
 export default Vue.extend({
   name: 'MenuIndex',
@@ -71,6 +81,9 @@ export default Vue.extend({
       const { data } = await getAllMenus()
       if (data.code === '000000') {
         this.menus = data.data
+        this.menus.forEach((item: any) => {
+          item.level = level[item.level]
+        })
       }
     },
 
