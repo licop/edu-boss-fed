@@ -96,6 +96,7 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: '/course/:courseId/video',
+        meta: '上传视频',
         name: 'course-video',
         component: () => import(/* webpackChunkName: 'course-video' */ '@/views/course/video.vue'),
         props: true

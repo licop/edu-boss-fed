@@ -43,9 +43,12 @@ export default {
   data () {
     return {
       uploader: null,
+      uploadPercent: 0,
       videoId: null,
       imageUrl: '',
-      fileName: ''
+      fileName: '',
+      isTransCodeSuccess: false,
+      isUploadSuccess: false
     }
   },
   created () {
@@ -53,6 +56,8 @@ export default {
   },
   methods: {
     authUpload () {
+      this.isTransCodeSuccess = false
+      this.isUploadSuccess = false
       const videoFile = this.$refs['video-file'].files[0]
       this.uploader.addFile(videoFile, null, null, null, '{"Vod":{}}')
       this.uploader.addFile(this.$refs['image-file'].files[0], null, null, null, '{"Vod":{}}')
@@ -108,6 +113,9 @@ export default {
         },
         // 文件上传进度，单位：字节
         onUploadProgress: function (uploadInfo, totalSize, loadedPercent) {
+          if(!uploadInfo.isImage) {
+            this.uploadPercent = Math.floor(loadedPercent * 100)
+          }
         },
         // 上传凭证超时
         onUploadTokenExpired: function (uploadInfo) {
@@ -115,13 +123,8 @@ export default {
         },
         // 全部文件上传结束
         onUploadEnd: async uploadInfo => {
-          console.log(uploadInfo)
-          console.log({
-            lessonId: this.$route.query.lessonId,
-            fileId: this.videoId,
-            coverImageUrl: this.imageUrl,
-            fileName: this.fileName
-          })
+          this.isUploadSuccess = true
+
           const { data } = await transCodeVideo({
             lessonId: this.$route.query.lessonId,
             fileId: this.videoId,
@@ -129,10 +132,14 @@ export default {
             fileName: this.fileName
           })
           console.log(data)
-
-          setInterval(async () => {
-             const { data } = await getAliyunTransCodePercent(this.$route.query.lessonId)
-             console.log('转码进度', data)
+          // 轮训查询转码进度
+          const timer = setInterval(async () => {
+            const { data } = await getAliyunTransCodePercent(this.$route.query.lessonId)
+            this.isTransCodeSuccess = true
+            if(data.data === 1000) {
+              window.clearInterval(timer)
+              console.log('转码成功')
+            } 
           }, 3000)
         }
       })
