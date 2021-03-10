@@ -1,28 +1,34 @@
 <template>
   <div class="role-list">
-    <el-card class="box-card">
+    <el-card class="box-form">
       <div slot="header" class="clearfix">
         <!-- <span>筛选搜索</span> -->
-        <el-form ref="form" :model="form">
-          <el-form-item label="角色名称" prop="name">
-            <el-input v-model="form.name"></el-input>
+        <el-form ref="form" :model="form" :inline="true" size="small">
+          <el-form-item label="角色名称:" prop="name">
+            <el-input v-model="form.name" @keyup.enter.native="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button
               type="primary"
               @click="onSubmit"
               :disabled="loading"
+              size="small"
             >查询搜索</el-button>
             <el-button
               :disabled="loading"
               @click="onReset"
+              size="small"
             >重置</el-button>
           </el-form-item>
         </el-form>
       </div>
-      <el-button @click="handleAdd">添加角色</el-button>
+      <el-button @click="handleAdd" size="small">添加角色</el-button>
+    </el-card>
+    <el-card class="box-table">
       <el-table
         :data="roles"
+        size="medium"
+        border
         style="width: 100%"
         v-loading="loading"
       >
@@ -51,6 +57,7 @@
             <div>
               <el-button
                 type="text"
+                size="mini"
                 @click="$router.push({
                   name: 'alloc-menu',
                   params: {
@@ -60,6 +67,7 @@
               >分配菜单</el-button>
               <el-button
                 type="text"
+                size="mini"
                 @click="$router.push({
                   name: 'alloc-resource',
                   params: {
@@ -71,6 +79,7 @@
             <div>
               <el-button
                 type="text"
+                size="mini"
                 @click="handleEdit(scope.row)"
               >编辑</el-button>
               <el-button
@@ -83,7 +92,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-
     <el-dialog
       :title="isEdit ? '编辑角色' : '添加角色'"
       :visible.sync="dialogVisible"
@@ -104,6 +112,7 @@
 import Vue from 'vue'
 import { getRoles, deleteRole } from '@/services/role'
 import { Form } from 'element-ui'
+import moment from 'moment'
 import CreateOrEdit from './CreateOrEdit.vue'
 
 export default Vue.extend({
@@ -135,6 +144,9 @@ export default Vue.extend({
       this.loading = true
       const { data } = await getRoles(this.form)
       this.roles = data.data.records
+      this.roles.forEach((role: any) => {
+        role.createdTime = moment(role.createdTime).format('YYYY-MM-DD HH:MM:SS')
+      })
       this.loading = false
     },
 

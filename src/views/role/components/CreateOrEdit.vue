@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-form>
-      <el-form-item label="角色名称">
+    <el-form label-width="80px">
+      <el-form-item label="角色名称:">
         <el-input v-model="role.name"></el-input>
       </el-form-item>
-      <el-form-item label="角色编码">
+      <el-form-item label="角色编码:">
         <el-input v-model="role.code"></el-input>
       </el-form-item>
-      <el-form-item label="角色描述">
+      <el-form-item label="角色描述:">
         <el-input type="textarea" v-model="role.description"></el-input>
       </el-form-item>
       <el-form-item>

@@ -21,8 +21,9 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '', // 默认子路由
-        name: 'home',
-        component: () => import(/* webpackChunkName: 'home' */ '@/views/home/index.vue')
+        meta: '课程管理',
+        name: 'course',
+        component: () => import(/* webpackChunkName: 'course' */ '@/views/course/index.vue')
       },
       {
         path: '/role',
