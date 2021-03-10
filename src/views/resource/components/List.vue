@@ -1,15 +1,36 @@
 <template>
   <div class="resource-list">
-    <el-card class="box-card">
+    <el-card class="box-form">
       <div slot="header" class="clearfix">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item prop="name" label="资源名称">
+        <div>
+          <el-button
+            style="float: right;"
+            size="small"
+            type="primary"
+            @click="onSubmit"
+            :disabled="isLoading"
+          >查询搜索</el-button>
+          <el-button
+            style="float: right; margin-right: 15px"
+            size="small"
+            @click="onReset"
+            :disabled="isLoading"
+          >重置</el-button>
+        </div>
+        <el-form
+          ref="form"
+          :model="form"
+          :inline="true"
+          size="small"
+          label-width="80px"
+        >
+          <el-form-item prop="name" label="资源名称:">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item prop="url" label="资源路径">
+          <el-form-item prop="url" label="资源路径:">
             <el-input v-model="form.url"></el-input>
           </el-form-item>
-          <el-form-item prop="categoryId" label="资源分类">
+          <el-form-item prop="categoryId" label="资源分类:">
             <el-select
               v-model="form.categoryId"
               placeholder="请选择资源分类"
@@ -23,51 +44,51 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button
-              type="primary"
-              @click="onSubmit"
-              :disabled="isLoading"
-            >查询搜索</el-button>
-            <el-button
-              @click="onReset"
-              :disabled="isLoading"
-            >重置</el-button>
-          </el-form-item>
         </el-form>
       </div>
+      <el-button @click="handleAdd" size="small">添加资源</el-button>
+    </el-card>
+    <el-card class="box-table">
       <el-table
         :data="resources"
+        size="medium"
+        border
         style="width: 100%; margin-bottom: 20px"
         v-loading="isLoading"
       >
         <el-table-column
           type="index"
           label="编号"
+          align='center'
           width="100">
         </el-table-column>
         <el-table-column
           prop="name"
           label="资源名称"
-          width="180">
+          align='center'
+          min-width="180">
         </el-table-column>
         <el-table-column
           prop="url"
-          width="180"
+          min-width="200"
+          align='center'
           label="资源路径">
         </el-table-column>
         <el-table-column
           prop="description"
-          width="180"
+          min-width="180"
+          align='center'
           label="描述">
         </el-table-column>
         <el-table-column
-          width="180"
+          min-width="180"
           prop="createdTime"
+          align='center'
           label="添加时间">
         </el-table-column>
         <el-table-column
-          width="180"
+          min-width="180"
+          align='center'
           label="操作">
           <template slot-scope="scope">
             <el-button

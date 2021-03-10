@@ -2,7 +2,6 @@
   <div class="role-list">
     <el-card class="box-form">
       <div slot="header" class="clearfix">
-        <!-- <span>筛选搜索</span> -->
         <el-form ref="form" :model="form" :inline="true" size="small">
           <el-form-item label="角色名称:" prop="name">
             <el-input v-model="form.name" @keyup.enter.native="onSubmit"></el-input>

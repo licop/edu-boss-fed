@@ -1,7 +1,7 @@
 <template>
   <el-card>
     <div slot="header">
-      <el-form :model="filterParams" ref="filter-form">
+      <el-form :model="filterParams" ref="filter-form" size="small" :inline="true">
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="filterParams.phone"></el-input>
         </el-form-item>
@@ -17,14 +17,14 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            :disabled="loading"
-            @click="handleReset"
-          >重置</el-button>
-          <el-button
             type="primary"
             @click="handleQuery"
             :disabled="loading"
           >查询</el-button>
+          <el-button
+            :disabled="loading"
+            @click="handleReset"
+          >重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -41,7 +41,7 @@
       <el-table-column
         prop="name"
         label="头像"
-        width="80">
+        min-width="80">
         <template slot-scope="scope">
           <img width="30px" :src="scope.row.portrait || 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'">
         </template>
@@ -49,34 +49,18 @@
       <el-table-column
         prop="name"
         label="用户名"
-        width="120">
+        min-width="120">
       </el-table-column>
       <el-table-column
         prop="phone"
         label="手机号"
-        width="120">
+        min-width="120">
       </el-table-column>
       <el-table-column
         prop="createTime"
         label="注册时间"
-        width="120">
+        min-width="120">
       </el-table-column>
-      <!-- <el-table-column
-        prop="name"
-        label="状态"
-        width="80">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.status"
-            active-value="ENABLE"
-            inactive-value="DISABLE"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            @change="handleForbidUser(scope.row)"
-          >
-          </el-switch>
-        </template>
-      </el-table-column> -->
       <el-table-column
         prop="address"
         label="操作">
@@ -116,6 +100,8 @@
 import Vue from 'vue'
 import { getUserPages, forbidUser } from '@/services/user'
 import { Form } from 'element-ui'
+import moment from 'moment'
+
 import {
   getAllRoles,
   allocateUserRoles,
@@ -160,12 +146,14 @@ export default Vue.extend({
       }
       const { data } = await getUserPages(this.filterParams)
       this.users = data.data.records
+      this.users.forEach((item: any) => {
+        item.createTime = moment(item.createTime).format('YYYY-MM-DD HH:MM:SS')
+      })
       this.loading = false
     },
 
     async handleForbidUser (user: any) {
       const { data } = await forbidUser(user.id)
-      console.log(data)
     },
 
     handleQuery () {

@@ -6,14 +6,15 @@
       </div>
       <el-form
         ref="form"
-        label-width="70px"
-        label-position="left"
+        label-width="90px"
+        :inline="true"
+        size="small"
         :model="filterParams"
       >
-        <el-form-item label="课程名称" prop="courseName">
+        <el-form-item label="课程名称:" prop="courseName">
           <el-input v-model="filterParams.courseName"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item label="状态:" prop="status">
           <el-select v-model="filterParams.status">
             <el-option label="全部" value=""></el-option>
             <el-option label="上架" value="1"></el-option>
@@ -22,14 +23,16 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            :disabled="loading"
-            @click="handleReset"
-          >重置</el-button>
-          <el-button
             type="primary"
+            size="small"
             :disabled="loading"
             @click="handleFilter"
           >查询</el-button>
+          <el-button
+            :disabled="loading"
+            size="small"
+            @click="handleReset"
+          >重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -40,6 +43,7 @@
         <el-button
           style="float: right; margin-top: -5px"
           type="primary"
+          size="small"
           @click="$router.push({
             name: 'course-create'
           })"
@@ -48,28 +52,34 @@
       <el-table
         :data="courses"
         v-loading="loading"
+        border
         style="width: 100%; margin-bottom: 20px"
       >
         <el-table-column
           prop="id"
           label="ID"
-          width="50">
+          align="center"
+          width="60">
         </el-table-column>
         <el-table-column
           prop="courseName"
           label="课程名称"
+          align="center"
           width="120">
         </el-table-column>
         <el-table-column
           prop="price"
+          align="center"
           label="价格">
         </el-table-column>
         <el-table-column
           prop="sortNum"
+          align="center"
           label="排序">
         </el-table-column>
         <el-table-column
           prop="status"
+          align="center"
           label="上架状态">
           <template slot-scope="scope">
             <el-switch
@@ -91,6 +101,7 @@
         >
           <template slot-scope="scope">
             <el-button
+              size="small"
               @click="$router.push({
                 name: 'course-edit',
                 params: {
@@ -99,6 +110,7 @@
               })"
             >编辑</el-button>
             <el-button
+              size="small"
               @click="$router.push({
                 name: 'course-section',
                 params: {
