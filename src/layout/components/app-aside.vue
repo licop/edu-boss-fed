@@ -35,7 +35,7 @@
         <i class="el-icon-document"></i>
         <span slot="title">用户管理</span>
       </el-menu-item>
-      <el-submenu index="4">
+      <!-- <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>广告管理</span>
@@ -48,7 +48,7 @@
           <i class="el-icon-setting"></i>
           <span slot="title">广告位列表</span>
         </el-menu-item>
-      </el-submenu>
+      </el-submenu> -->
     </el-menu>
   </div>
 </template>

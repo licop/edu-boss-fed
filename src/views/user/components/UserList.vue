@@ -62,6 +62,14 @@
         min-width="120">
       </el-table-column>
       <el-table-column
+        prop="status"
+        label="状态"
+        min-width="120">
+        <template slot-scope="scope">
+          <i :title="scope.row.status === 'DISABLE' ? '禁用' : '正常'" class="status" :class="scope.row.status === 'DISABLE' ? 'status-danger' : 'status-success'"></i>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="address"
         label="操作">
         <template slot-scope="scope">

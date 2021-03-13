@@ -118,17 +118,36 @@
         :total="totalCount">
       </el-pagination>
     </el-card>
+    <el-dialog
+      :title="isEdit ? '编辑资源' : '添加资源'"
+      :visible.sync="dialogVisible"
+      width="50%"
+    >
+      <create-or-edit
+        v-if="dialogVisible"
+        :resource-id="resourceId"
+        :resourceCategories='resourceCategories'
+        :is-edit="isEdit"
+        @success="onSuccess"
+        @cancel="dialogVisible = false"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { getResourcePages } from '@/services/resource'
+import { getResourcePages, deleteResource } from '@/services/resource'
 import { getResourceCategories } from '@/services/resource-category'
 import { Form } from 'element-ui'
+import moment from 'moment'
+import CreateOrEdit from './CreateOrEdit.vue'
 
 export default Vue.extend({
   name: 'ResourceList',
+  components: {
+    CreateOrEdit
+  },
   data () {
     return {
       resources: [], // 资源列表
@@ -141,7 +160,10 @@ export default Vue.extend({
       },
       totalCount: 0,
       resourceCategories: [], // 资源分类列表
-      isLoading: true // 加载状态
+      isLoading: true, // 加载状态
+      resourceId: null, // 编辑资源的 ID
+      dialogVisible: false, // 控制添加/编辑角色的对话框显示和隐藏
+      isEdit: false
     }
   },
 
@@ -154,12 +176,17 @@ export default Vue.extend({
     async loadResourceCategories () {
       const { data } = await getResourceCategories()
       this.resourceCategories = data.data
+      console.log(this.resourceCategories, 179)
     },
 
     async loadResources () {
       this.isLoading = true // 展示加载中状态
       const { data } = await getResourcePages(this.form)
       this.resources = data.data.records
+      this.resources.forEach((item: any) => {
+        item.createdTime = moment(item.createdTime).format('YYYY-MM-DD HH:MM:SS')
+      })
+      console.log(this.resources, 181)
       this.totalCount = data.data.total
       this.isLoading = false // 关闭加载中状态
     },
@@ -169,12 +196,25 @@ export default Vue.extend({
       this.loadResources()
     },
 
-    handleEdit (item: any) {
-      console.log('handleEdit', item)
+    handleEdit (resource: any) {
+      this.dialogVisible = true
+      this.resourceId = resource.id
+      this.isEdit = true
     },
 
-    handleDelete (item: any) {
-      console.log('handleDelete', item)
+    async handleDelete (resource: any) {
+      try {
+        await this.$confirm(`确认删除角色：${resource.name}？`, '删除提示')
+        await deleteResource(resource.id)
+        this.$message.success('删除成功')
+        this.loadResources()
+      } catch (err) {
+        if (err && err.response) {
+          this.$message.error('删除失败，请重试')
+        } else {
+          this.$message.info('取消删除')
+        }
+      }
     },
 
     handleSizeChange (val: number) {
@@ -193,6 +233,16 @@ export default Vue.extend({
       (this.$refs.form as Form).resetFields()
       this.form.current = 1 // 重置回到第1页
       this.loadResources()
+    },
+
+    onSuccess () {
+      this.dialogVisible = false // 关闭对话框
+      this.loadResources() // 重新加载数据列表
+    },
+
+    handleAdd () {
+      this.isEdit = false
+      this.dialogVisible = true
     }
   }
 })

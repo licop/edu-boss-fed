@@ -55,7 +55,6 @@ export default Vue.extend({
       const { data } = await getRoleById(this.roleId)
       this.role = data.data
     },
-
     async onSubmit () {
       await createOrUpdate(this.role)
       this.$message.success('操作成功')

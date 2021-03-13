@@ -36,3 +36,25 @@ export const getRoleResources = (roleId: string | number) => {
     }
   })
 }
+
+export const deleteResource = (id: string | number) => {
+  return request({
+    method: 'DELETE',
+    url: `/boss/resource/${id}`
+  })
+}
+
+export const createOrUpdate = (data: any) => {
+  return request({
+    method: 'POST',
+    url: '/boss/resource/saveOrUpdate',
+    data
+  })
+}
+
+export const getResourceById = (id: string | number) => {
+  return request({
+    method: 'GET',
+    url: `/boss/resource/${id}`
+  })
+}
